@@ -1,3 +1,5 @@
+## John Voorhess
+## voor@umich.edu
 ## HW 1
 ## SI 364 F17
 ## Due: September 19, 2017
@@ -15,6 +17,7 @@
 ## Below is code for one of the simplest possible Flask applications. Edit the code so that once you run this application locally and go to the URL 'http://localhost:5000/class', you see a page that says "Welcome to SI 364!"
 
 from flask import Flask
+import requests
 app = Flask(__name__)
 app.debug = True
 
@@ -22,10 +25,18 @@ app.debug = True
 def hello_to_you():
     return 'Hello!'
 
-@app.route('/class')
-def classId():
-    return '<h1>Welcome to SI 364!</h1>'
+#---[PROBLEM 1]---
+@app.route('/class') #for the route '/class'
+def classId(): #classId function is defined
+    return '<h1>Welcome to SI 364!</h1>' #special message will be displayed on the screen
 
+#---[PROBLEM 2]---
+@app.route('/movie/<nameOfMovieHereOneWord>') #for the route '/movie/<parameter>'
+def movie(nameOfMovieHereOneWord): #movie function is defined
+    #for the request, the parameter is inserted to the query as a search "term", the type of "entity" requested is "movie" ("The type of results you want returned, relative to the specified media type." - apple.com)
+    response = requests.get("https://itunes.apple.com/search",params={"term":nameOfMovieHereOneWord,"entity":"movie"})
+    #return a simple text representation of the dictionary loaded into the response variable in the previous query
+    return response.text
 
 if __name__ == '__main__':
     app.run()
